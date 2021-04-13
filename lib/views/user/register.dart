@@ -13,6 +13,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String email = '';
   String password = '';
   String error = '';
+  DateTime date;
   bool loading = false;
   @override
   Widget build(BuildContext context) {
@@ -33,29 +34,76 @@ class _RegisterPageState extends State<RegisterPage> {
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: Form(
             key: _formKey,
-            child: Container(
-                child: Column(
-              children: <Widget>[
-                WelcomeHeader(),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
+            child: SingleChildScrollView(
+              child: Container(
                   child: Column(
+                children: <Widget>[
+                  WelcomeHeader(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
                     children: <Widget>[
-                      TextFormField(
-                        validator: (value) =>
-                            value.isEmpty ? 'Enter email' : null,
-                        onChanged: (val) {
-                          setState(() => email = val);
-                        },
-                        decoration: decorationBox.copyWith(hintText: 'Email'),
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                          child: TextFormField(
+                            decoration:
+                                decorationBox.copyWith(hintText: 'First Name'),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                          child: TextFormField(
+                            decoration:
+                                decorationBox.copyWith(hintText: 'Last Name'),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            )),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    decoration: decorationBox.copyWith(hintText: 'Email'),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                          child: TextFormField(
+                            decoration:
+                                decorationBox.copyWith(hintText: 'Password'),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                          child: TextFormField(
+                            decoration: decorationBox.copyWith(
+                                hintText: 'Confirm Password'),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )),
+            ),
           ),
         ));
   }

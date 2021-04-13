@@ -72,20 +72,20 @@ class AuthService extends ChangeNotifier {
       String religion) async {
     final Map<String, dynamic> registrationData = {
       'user': {
-        'emp_first_name': empFirstName,
-        'emp_last_name': empLastName,
-        'emp_email': email,
-        'emp_password': password,
-        'emp_repass': confirm_password,
-        'emp_race': race,
-        'emp_religion': religion,
+        'first_name': empFirstName,
+        'last_name': empLastName,
+        'email': email,
+        'password': password,
+        'password2': confirm_password,
+        'race': race,
       }
     };
 
     _registeredInStats = Status.Registering;
     notifyListeners();
 
-    return await post(Uri.parse('uri'),
+    return await post(
+            Uri.parse('https://192.168.0.144/ClockServe_app/api/register.php'),
             body: json.encode(registrationData),
             headers: {'Content-Type': 'application/json'})
         .then(onValue)

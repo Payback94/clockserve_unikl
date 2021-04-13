@@ -1,6 +1,7 @@
 import 'package:clockserve_unikl/models/employee.dart';
 import 'package:clockserve_unikl/services/Employee_provider.dart';
 import 'package:clockserve_unikl/services/preferences/employee_preferences.dart';
+import 'package:clockserve_unikl/views/qr_scanner/attendance_Scan.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,10 +25,8 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           ElevatedButton.icon(
             onPressed: () async {
-              await Employee_preferences().removeEmployee();
-              if (emp == null) {
-                Navigator.pushReplacementNamed(context, '/authenticatePage');
-              }
+              Employee_preferences().removeEmployee();
+              Navigator.pushReplacementNamed(context, '/authenticate');
             },
             label: Text(
               'Log Out',
@@ -49,7 +48,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton.extended(
         label: Text('Check In'),
         icon: Icon(Icons.camera_alt),
-        onPressed: () {},
+        onPressed: () => navigateToScanPage(context),
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {},
@@ -60,11 +59,16 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Text(emp.empFirstName),
+              Text(emp.empFirstName ?? 'emp first name'),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+Future navigateToScanPage(context) async {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => AttendanceScanner()));
 }

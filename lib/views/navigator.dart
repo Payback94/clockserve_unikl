@@ -1,10 +1,15 @@
+import 'package:clockserve_unikl/models/employee.dart';
 import 'package:clockserve_unikl/services/Employee_provider.dart';
+import 'package:clockserve_unikl/views/leave_request/leave_main.dart';
+import 'package:clockserve_unikl/views/report/report_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'user/homepage.dart';
 
 class NavigatorPage extends StatefulWidget {
+  final Employee emp;
+  const NavigatorPage({Key key, this.emp}) : super(key: key);
   _NavigatorPageState createState() => _NavigatorPageState();
 }
 
@@ -15,7 +20,12 @@ class _NavigatorPageState extends State<NavigatorPage> {
   Widget build(BuildContext context) {
     final emp = Provider.of<Employee_Provider>(context).emp;
     final tabs = [
-      Center(child: HomePage()),
+      Center(
+          child: HomePage(
+        emp: emp,
+      )),
+      Center(child: ReportListPage()),
+      Center(child: LeaveMainPage()),
     ];
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(

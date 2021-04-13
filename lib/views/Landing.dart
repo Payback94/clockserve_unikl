@@ -3,6 +3,7 @@ import 'package:clockserve_unikl/services/Employee_provider.dart';
 import 'package:clockserve_unikl/services/auth.dart';
 import 'package:clockserve_unikl/services/preferences/employee_preferences.dart';
 import 'package:clockserve_unikl/views/navigator.dart';
+import 'package:clockserve_unikl/views/qr_scanner/attendance_Scan.dart';
 import 'package:clockserve_unikl/views/user/authenticate.dart';
 import 'package:clockserve_unikl/views/user/homepage.dart';
 import 'package:clockserve_unikl/views/user/login.dart';
@@ -43,16 +44,19 @@ class _LandingState extends State<Landing> {
                 default:
                   if (snapshot.hasError) {
                     return Text('Error:${snapshot.error}');
-                  } else if (snapshot.data.empId == null)
+                  } else if (snapshot.data.empId == null) {
                     return AuthenticatePage();
-                  else
-                    Employee_preferences().removeEmployee();
-                  return HomePage(emp: snapshot.data);
+                  } else {
+                    return NavigatorPage(
+                      emp: snapshot.data,
+                    );
+                  }
               }
             }),
         routes: {
           '/navigatorPage': (context) => NavigatorPage(),
-          '/authenticate': (context) => AuthenticatePage()
+          '/authenticate': (context) => AuthenticatePage(),
+          '/attendancePage': (context) => AttendanceScanner()
         },
       ),
     );
