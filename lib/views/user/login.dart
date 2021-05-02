@@ -20,7 +20,6 @@ class _LoginPageState extends State<LoginPage> {
   bool loading = false;
   @override
   Widget build(BuildContext context) {
-    AuthService auth = Provider.of<AuthService>(context);
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -68,18 +67,22 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    AuthService auth = new AuthService();
-                    final Future<Map<String, dynamic>> successMsg =
-                        auth.empLogin(email, password);
-                    successMsg.then((response) {
-                      if (response['status']) {
-                        Employee emp = response['employee'];
-                        Provider.of<Employee_Provider>(context, listen: false)
-                            .setEmp(emp);
-                        Navigator.pushReplacementNamed(
-                            context, '/navigatorPage');
-                      }
-                    });
+                    final form = _formKey.currentState;
+                    if (form.validate()) {
+                      form.save();
+                      AuthService auth = new AuthService();
+                      final Future<Map<String, dynamic>> successMsg =
+                          auth.empLogin(email, password);
+                      successMsg.then((response) {
+                        if (response['status']) {
+                          Employee emp = response['employee'];
+                          Provider.of<Employee_Provider>(context, listen: false)
+                              .setEmp(emp);
+                          Navigator.pushReplacementNamed(
+                              context, '/navigatorPage');
+                        }
+                      });
+                    }
                   },
                   child: Text('Log In'),
                 ),

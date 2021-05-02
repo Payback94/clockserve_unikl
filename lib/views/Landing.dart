@@ -21,7 +21,6 @@ class _LandingState extends State<Landing> {
   @override
   Widget build(BuildContext context) {
     Future<Employee> getuserdata() => Employee_preferences().getEmployee();
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -47,14 +46,13 @@ class _LandingState extends State<Landing> {
                   } else if (snapshot.data.empId == null) {
                     return AuthenticatePage();
                   } else {
-                    return NavigatorPage(
-                      emp: snapshot.data,
-                    );
+                    return NavigatorPage();
                   }
               }
             }),
         routes: {
           '/navigatorPage': (context) => NavigatorPage(),
+          '/homePage': (context) => HomePage(),
           '/authenticate': (context) => AuthenticatePage(),
           '/attendancePage': (context) => AttendanceScanner()
         },

@@ -6,9 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  final Employee emp;
-
-  const HomePage({Key key, this.emp}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -19,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   //using futureprovider to get snapshot data of user object from database
   @override
   Widget build(BuildContext context) {
-    final emp = Provider.of<Employee_Provider>(context).emp;
+    Employee emp = Provider.of<Employee_Provider>(context).emp;
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[

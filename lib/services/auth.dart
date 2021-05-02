@@ -68,8 +68,8 @@ class AuthService extends ChangeNotifier {
       String email,
       String password,
       String confirm_password,
-      String race,
-      String religion) async {
+      String gender,
+      String race) async {
     final Map<String, dynamic> registrationData = {
       'user': {
         'first_name': empFirstName,
@@ -86,8 +86,16 @@ class AuthService extends ChangeNotifier {
 
     return await post(
             Uri.parse('https://192.168.0.144/ClockServe_app/api/register.php'),
-            body: json.encode(registrationData),
-            headers: {'Content-Type': 'application/json'})
+            body: json.encode({
+              'first_name': empFirstName,
+              'last_name': empLastName,
+              'email': email,
+              'password': password,
+              'password2': confirm_password,
+              'gender': gender,
+              'race': race
+            }),
+            headers: {'Content-Type': 'application/json', 'Charset': 'utf-8'})
         .then(onValue)
         .catchError(onError);
   }
