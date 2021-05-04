@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clockserve_unikl/services/attendance_serv.dart';
 import 'package:clockserve_unikl/services/Employee_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class _AttendanceScannerState extends State<AttendanceScanner> {
       }
     }
 
+    AttendanceServ attServ = new AttendanceServ();
     final emp = Provider.of<Employee_Provider>(context).emp;
     DateTime dt = new DateTime.now();
     return Scaffold(
@@ -59,8 +61,8 @@ class _AttendanceScannerState extends State<AttendanceScanner> {
                         final Map<String, dynamic> jsonConvert =
                             jsonDecode(resultScan);
                         String attStr = jsonConvert['session_id'];
-                        String dateStr = jsonConvert['date'];
-                        var rDate = DateTime.parse(dateStr);
+                        var rDate = DateTime.parse(jsonConvert['date']);
+                        attServ.timeIn(emp.empId, attStr, rDate);
                       },
                       child: Text('Scan')),
                 ),
