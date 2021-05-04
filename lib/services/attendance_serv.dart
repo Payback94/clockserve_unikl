@@ -5,30 +5,59 @@ import 'package:clockserve_unikl/models/attendance.dart';
 import 'package:http/http.dart';
 
 class AttendanceServ {
-  Future<Attendance> timeIn(int empId, String attString, DateTime day) async {
+  Future<Attendance> timeIn(int empId, String attString, DateTime date) async {
+    final dateOnly = new DateFormat('yyyy-MM-dd');
+    final timeFormat = new DateFormat('hh:mm:ss');
+    final dayName = new DateFormat('EEEE');
+
     Response response = await post(
       Uri.parse(
           'https://192.168.0.144/ClockServe_app/api/attendance/timeIn.php'),
       body: jsonEncode({
         "emp_id": empId,
         "attendance_string": attString,
-        "attendance_day": day,
-        "attendance_date": day,
-        "attendance_timeIn": day
+        "attendance_day": dayName.format(date),
+        "attendance_date": dateOnly.format(date),
+        "attendance_timeIn": timeFormat.format(date)
       }),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    if (response.statusCode == 201) {
+    print(response.body);
+    if (response.statusCode == 200) {
       return Attendance.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to clock in');
     }
   }
 
-  Future<Map<String, dynamic>> timeOut(
-      int empId, String attString, DateTime day) {}
+  Future<Attendance> timeOut(int empId, String attString, DateTime date) async {
+    final dateOnly = new DateFormat('yyyy-MM-dd');
+    final timeFormat = new DateFormat('hh:mm:ss');
+    final dayName = new DateFormat('EEEE');
+
+    Response response = await put(
+      Uri.parse(
+          'https://192.168.0.144/ClockServe_app/api/attendance/timeOut.php'),
+      body: jsonEncode({
+        "emp_id": empId,
+        "attendance_string": attString,
+        "attendance_day": dayName.format(date),
+        "attendance_date": dateOnly.format(date),
+        "attendance_timeIn": timeFormat.format(date)
+      }),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      return Attendance.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to clock in');
+    }
+  }
 
   Future<List<Attendance>> getEmpAttendance(int id) async {
     Response response = await get(Uri.parse(
