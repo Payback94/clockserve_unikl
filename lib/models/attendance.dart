@@ -28,15 +28,17 @@ class Attendance {
   String attendanceTimeIn;
   String attendanceTimeOut;
 
-  factory Attendance.fromJson(Map<String, dynamic> json) => Attendance(
-        attendanceId: json["attendance_id"],
-        attendanceString: json["attendance_string"],
-        empId: json["emp_id"],
-        attendanceDay: json["attendance_day"],
-        attendanceDate: DateTime.parse(json["attendance_date"]),
-        attendanceTimeIn: json["attendance_timeIn"],
-        attendanceTimeOut: json["attendance_timeOut"],
-      );
+  factory Attendance.fromJson(Map<String, dynamic> json) {
+    return Attendance(
+      attendanceId: json["attendance_id"],
+      attendanceString: json["session_id"],
+      empId: json["emp_id"],
+      attendanceDay: json["attendance_day"],
+      attendanceDate: DateTime.parse(json["attendance_date"]),
+      attendanceTimeIn: json["attendance_timeIn"],
+      attendanceTimeOut: json["attendance_timeOut"],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "attendance_id": attendanceId,

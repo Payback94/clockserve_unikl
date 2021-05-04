@@ -76,10 +76,10 @@ class _LoginPageState extends State<LoginPage> {
                       successMsg.then((response) {
                         if (response['status']) {
                           Employee emp = response['employee'];
+                          print(emp);
                           Provider.of<Employee_Provider>(context, listen: false)
                               .setEmp(emp);
-                          Navigator.pushReplacementNamed(
-                              context, '/navigatorPage');
+                          Navigator.pushReplacementNamed(context, '/homePage');
                         }
                       });
                     }

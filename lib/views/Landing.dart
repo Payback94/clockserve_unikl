@@ -6,7 +6,6 @@ import 'package:clockserve_unikl/views/navigator.dart';
 import 'package:clockserve_unikl/views/qr_scanner/attendance_Scan.dart';
 import 'package:clockserve_unikl/views/user/authenticate.dart';
 import 'package:clockserve_unikl/views/user/homepage.dart';
-import 'package:clockserve_unikl/views/user/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +16,6 @@ class Landing extends StatefulWidget {
 
 class _LandingState extends State<Landing> {
   //AuthService auth = new AuthService();
-
   @override
   Widget build(BuildContext context) {
     Future<Employee> getuserdata() => Employee_preferences().getEmployee();
@@ -28,7 +26,7 @@ class _LandingState extends State<Landing> {
         ),
         ChangeNotifierProvider(
           create: (_) => Employee_Provider(),
-        )
+        ),
       ],
       child: MaterialApp(
         title: 'ClockServe',
@@ -43,10 +41,11 @@ class _LandingState extends State<Landing> {
                 default:
                   if (snapshot.hasError) {
                     return Text('Error:${snapshot.error}');
-                  } else if (snapshot.data.empId == null) {
+                  } else if (snapshot.data == null) {
                     return AuthenticatePage();
                   } else {
-                    return NavigatorPage();
+                    print(snapshot.data.empEmail);
+                    return HomePage(emp: snapshot.data);
                   }
               }
             }),

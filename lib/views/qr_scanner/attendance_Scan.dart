@@ -26,6 +26,7 @@ class _AttendanceScannerState extends State<AttendanceScanner> {
     }
 
     final emp = Provider.of<Employee_Provider>(context).emp;
+    DateTime dt = new DateTime.now();
     return Scaffold(
       appBar: AppBar(
         title: Text('Attendance Scanner'),
@@ -38,7 +39,18 @@ class _AttendanceScannerState extends State<AttendanceScanner> {
           children: <Widget>[
             Column(
               children: [
-                Text('Welcome ${emp.empFirstName.toUpperCase()}'),
+                Text(
+                  'WELCOME ${emp.empFirstName.toUpperCase()}',
+                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'TODAY IS ${dt.day}-${dt.month}-${dt.year}',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                ),
+                Text(
+                  'CURRENT TIME ${dt.hour}:${dt.minute}:${dt.second}',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                ),
                 Container(
                   width: 200,
                   child: ElevatedButton(
@@ -46,6 +58,9 @@ class _AttendanceScannerState extends State<AttendanceScanner> {
                         var resultScan = await _scan();
                         final Map<String, dynamic> jsonConvert =
                             jsonDecode(resultScan);
+                        String attStr = jsonConvert['session_id'];
+                        String dateStr = jsonConvert['date'];
+                        var rDate = DateTime.parse(dateStr);
                       },
                       child: Text('Scan')),
                 ),
