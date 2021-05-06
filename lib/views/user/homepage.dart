@@ -1,6 +1,8 @@
+import 'package:clockserve_unikl/models/attendance.dart';
 import 'package:clockserve_unikl/models/employee.dart';
 import 'package:clockserve_unikl/services/Employee_provider.dart';
 import 'package:clockserve_unikl/services/preferences/employee_preferences.dart';
+import 'package:clockserve_unikl/views/user/profile.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:clockserve_unikl/views/leave_request/leave_main.dart';
 import 'package:clockserve_unikl/views/qr_scanner/attendance_Scan.dart';
@@ -21,7 +23,6 @@ class _HomePageState extends State<HomePage> {
   //using futureprovider to get snapshot data of user object from database
   @override
   Widget build(BuildContext context) {
-    Provider.of<Employee_Provider>(context).setEmp(widget.emp);
     return Scaffold(
         appBar: AppBar(
           actions: <Widget>[
@@ -47,11 +48,6 @@ class _HomePageState extends State<HomePage> {
         //after scanning a qr code it should parse the json array
         //into a method, the method will take that as parameter.
         //method should send http request check in the auth dart
-        floatingActionButton: FloatingActionButton.extended(
-          label: Text('Check In'),
-          icon: Icon(Icons.camera_alt),
-          onPressed: () => navigateToScanPage(context),
-        ),
         // floatingActionButton: FloatingActionButton(
         //   onPressed: () {},
         //   child: Icon(Icons.alarm_on),
@@ -71,12 +67,13 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       child: Card(
                         child: Container(
-                          height: 110,
+                          height: 140,
                           padding: EdgeInsets.all(20),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
                                     margin: EdgeInsets.symmetric(horizontal: 5),
@@ -91,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                                 width: 30,
                               ),
                               Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Row(
@@ -211,6 +209,64 @@ class HomePageBody extends StatelessWidget {
               shadowColor: Colors.black,
               child: InkWell(
                 onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AttendanceScanner()));
+                },
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Image.asset(
+                      'lib/assets/img/qr-code.png',
+                      cacheHeight: 80,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text('Attendance Scanner'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
+            width: 150,
+            height: 150,
+            child: Card(
+              shadowColor: Colors.black,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProfilePage()));
+                },
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Image.asset(
+                        'lib/assets/img/record.png',
+                        cacheHeight: 80,
+                      ),
+                    ),
+                    Text('Profile'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
+            width: 150,
+            height: 150,
+            child: Card(
+              shadowColor: Colors.black,
+              child: InkWell(
+                onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LeaveMainPage()));
                 },
@@ -227,33 +283,6 @@ class HomePageBody extends StatelessWidget {
                       height: 10,
                     ),
                     Text('Leave Request'),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Container(
-            width: 150,
-            height: 150,
-            child: Card(
-              shadowColor: Colors.black,
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AttendanceScanner()));
-                },
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Image.asset(
-                      'lib/assets/img/record.png',
-                      cacheHeight: 80,
-                    ),
-                    TextButton(onPressed: () {}, child: Text('Profile'))
                   ],
                 ),
               ),

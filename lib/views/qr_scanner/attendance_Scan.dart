@@ -14,6 +14,8 @@ class AttendanceScanner extends StatefulWidget {
 }
 
 class _AttendanceScannerState extends State<AttendanceScanner> {
+  bool clockedIn = false;
+  String clockStats = "Clocked Out";
   @override
   Widget build(BuildContext context) {
     Future _scan() async {
@@ -41,17 +43,41 @@ class _AttendanceScannerState extends State<AttendanceScanner> {
           children: <Widget>[
             Column(
               children: [
-                Text(
-                  'WELCOME ${emp.empFirstName.toUpperCase()}',
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'TODAY IS ${dt.day}-${dt.month}-${dt.year}',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-                ),
-                Text(
-                  'CURRENT TIME ${dt.hour}:${dt.minute}:${dt.second}',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'WELCOME ${emp.empFirstName.toUpperCase()}',
+                      style:
+                          TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'TODAY IS ${dt.day}-${dt.month}-${dt.year}',
+                      style: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.normal),
+                    ),
+                    Text(
+                      'CURRENT TIME ${dt.hour}:${dt.minute}:${dt.second}',
+                      style: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.normal),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Attendance Status: ',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.normal),
+                        ),
+                        Text(
+                          '${clockStats}',
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
                 Container(
                   width: 200,
@@ -63,8 +89,26 @@ class _AttendanceScannerState extends State<AttendanceScanner> {
                         String attStr = jsonConvert['session_id'];
                         var rDate = DateTime.parse(jsonConvert['date']);
                         attServ.timeIn(emp.empId, attStr, rDate);
+                        setState(() {
+                          clockedIn = true;
+                          clockStats = "Clocked In";
+                        });
                       },
                       child: Text('Scan')),
+                ),
+                Container(
+                  width: 200,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.red)),
+                      onPressed: () async {
+                        setState(() {
+                          clockedIn = false;
+                          clockStats = "Clocked Out";
+                        });
+                      },
+                      child: Text('Clock Out')),
                 ),
               ],
             ),
