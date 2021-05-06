@@ -47,8 +47,7 @@ class _LandingState extends State<Landing> {
                   } else if (snapshot.data == null) {
                     return AuthenticatePage();
                   } else {
-                    Provider.of<Employee_Provider>(context)
-                        .setEmp(snapshot.data);
+                    print(snapshot.data);
                     return HomePage(emp: snapshot.data);
                   }
               }

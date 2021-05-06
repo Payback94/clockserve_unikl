@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   //using futureprovider to get snapshot data of user object from database
   @override
   Widget build(BuildContext context) {
+    Provider.of<Employee_Provider>(context).setEmp(widget.emp);
     return Scaffold(
         appBar: AppBar(
           actions: <Widget>[
@@ -94,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                                   Row(
                                     children: <Widget>[
                                       Text(
-                                        widget.emp.empFirstName.toUpperCase(),
+                                        widget.emp.empFirstName ?? "First Name",
                                         style: TextStyle(
                                             color: Colors.blue,
                                             fontWeight: FontWeight.bold),
@@ -103,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                                         width: 5,
                                       ),
                                       Text(
-                                        widget.emp.empLastName.toUpperCase(),
+                                        widget.emp.empLastName ?? "Last Name",
                                         style: TextStyle(
                                             color: Colors.blue,
                                             fontWeight: FontWeight.bold),
@@ -113,15 +114,15 @@ class _HomePageState extends State<HomePage> {
                                   SizedBox(
                                     height: 2,
                                   ),
-                                  Text(widget.emp.empEmail.toUpperCase()),
+                                  Text(widget.emp.empEmail ?? "Email"),
                                   SizedBox(
                                     height: 2,
                                   ),
-                                  Text(widget.emp.empBirthDate),
+                                  Text(widget.emp.empBirthDate ?? "BirthDate"),
                                   SizedBox(
                                     height: 2,
                                   ),
-                                  Text(widget.emp.empRace.toUpperCase()),
+                                  Text(widget.emp.empRace ?? "Race"),
                                 ],
                               ),
                             ],
