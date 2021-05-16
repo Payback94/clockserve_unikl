@@ -12,7 +12,7 @@ class AttendanceServ {
 
     Response response = await post(
       Uri.parse(
-          'https://192.168.0.144/ClockServe_app/api/attendance/timeIn.php'),
+          'https://192.168.0.171/ClockServe_app/api/attendance/timeIn.php'),
       body: jsonEncode({
         "emp_id": empId,
         "attendance_string": attString,
@@ -39,7 +39,7 @@ class AttendanceServ {
 
     Response response = await put(
       Uri.parse(
-          'https://192.168.0.144/ClockServe_app/api/attendance/timeOut.php'),
+          'https://192.168.0.171/ClockServe_app/api/attendance/timeOut.php'),
       body: jsonEncode({
         "emp_id": empId,
         "attendance_string": attString,
@@ -61,7 +61,7 @@ class AttendanceServ {
 
   Future<List<Attendance>> getEmpAttendance(int id) async {
     Response response = await get(Uri.parse(
-        'https://192.168.0.144/ClockServe_app/api/attendance/read_all_emp.php?emp_id=$id'));
+        'https://192.168.0.171/ClockServe_app/api/attendance/read_all_emp.php?emp_id=$id'));
     if (response.statusCode == 200) {
       print(response.body);
       List<dynamic> body = jsonDecode(response.body)['data'];

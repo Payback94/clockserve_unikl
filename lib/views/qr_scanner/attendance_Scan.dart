@@ -108,7 +108,7 @@ class _AttendanceScannerState extends State<AttendanceScanner> {
                           clockStats = "Clocked Out";
                         });
                       },
-                      child: Text('Clock Out')),
+                      child: Text(clockedIn ? 'Clocked Out' : 'Clock Out')),
                 ),
               ],
             ),

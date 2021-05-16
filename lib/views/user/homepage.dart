@@ -2,8 +2,8 @@ import 'package:clockserve_unikl/models/attendance.dart';
 import 'package:clockserve_unikl/models/employee.dart';
 import 'package:clockserve_unikl/services/Employee_provider.dart';
 import 'package:clockserve_unikl/services/preferences/employee_preferences.dart';
+import 'package:clockserve_unikl/views/user/authenticate.dart';
 import 'package:clockserve_unikl/views/user/profile.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:clockserve_unikl/views/leave_request/leave_main.dart';
 import 'package:clockserve_unikl/views/qr_scanner/attendance_Scan.dart';
 import 'package:clockserve_unikl/views/report/report_list.dart';
@@ -18,11 +18,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //to do: add back end
-  //use futurebuilder to return user object
-  //using futureprovider to get snapshot data of user object from database
   @override
   Widget build(BuildContext context) {
+    final emp = Provider.of<Employee_Provider>(context).emp;
     return Scaffold(
         appBar: AppBar(
           actions: <Widget>[
@@ -94,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                                   Row(
                                     children: <Widget>[
                                       Text(
-                                        widget.emp.empFirstName.toUpperCase(),
+                                        emp.empFirstName ?? "First Name",
                                         style: TextStyle(
                                             color: Colors.blue,
                                             fontWeight: FontWeight.bold),
@@ -103,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                                         width: 5,
                                       ),
                                       Text(
-                                        widget.emp.empLastName.toUpperCase(),
+                                        emp.empLastName ?? "Last Name",
                                         style: TextStyle(
                                             color: Colors.blue,
                                             fontWeight: FontWeight.bold),
@@ -113,15 +111,15 @@ class _HomePageState extends State<HomePage> {
                                   SizedBox(
                                     height: 2,
                                   ),
-                                  Text(widget.emp.empEmail.toUpperCase()),
+                                  Text(emp.empEmail ?? "Email"),
                                   SizedBox(
                                     height: 2,
                                   ),
-                                  Text(widget.emp.empBirthDate),
+                                  Text(emp.empBirthDate ?? "Birthdate"),
                                   SizedBox(
                                     height: 2,
                                   ),
-                                  Text(widget.emp.empRace.toUpperCase()),
+                                  Text(emp.empRace ?? "Race"),
                                 ],
                               ),
                             ],
