@@ -15,6 +15,8 @@ class AttendanceScanner extends StatefulWidget {
 
 class _AttendanceScannerState extends State<AttendanceScanner> {
   bool clockedIn = false;
+  bool lunch = false;
+  bool clockedOut = true;
   String clockStats = "Clocked Out";
   @override
   Widget build(BuildContext context) {
@@ -82,33 +84,64 @@ class _AttendanceScannerState extends State<AttendanceScanner> {
                 Container(
                   width: 200,
                   child: ElevatedButton(
-                      onPressed: () async {
-                        var resultScan = await _scan();
-                        final Map<String, dynamic> jsonConvert =
-                            jsonDecode(resultScan);
-                        String attStr = jsonConvert['session_id'];
-                        var rDate = DateTime.parse(jsonConvert['date']);
-                        attServ.timeIn(emp.empId, attStr, rDate);
-                        setState(() {
-                          clockedIn = true;
-                          clockStats = "Clocked In";
-                        });
-                      },
+                      onPressed: clockedIn
+                          ? null
+                          : () async {
+                              if (lunch == false) {
+                                var resultScan = await _scan();
+                                final Map<String, dynamic> jsonConvert =
+                                    jsonDecode(resultScan);
+                                String attStr = jsonConvert['session_id'];
+                                var rDate = DateTime.parse(jsonConvert['date']);
+                                attServ.timeIn(emp.empId, attStr, rDate);
+                                setState(() {
+                                  clockedIn = true;
+                                  clockedOut = false;
+                                  clockStats = "Clocked In";
+                                });
+                              } else {
+                                DateTime rDate = DateTime.now();
+                                attServ.lunchIn(emp.empId, rDate);
+                                setState(() {
+                                  clockedIn = true;
+                                  clockedOut = false;
+                                  clockStats = "Clocked In";
+                                });
+                              }
+                            },
                       child: Text('Scan')),
                 ),
                 Container(
                   width: 200,
                   child: ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.red)),
-                      onPressed: () async {
-                        setState(() {
-                          clockedIn = false;
-                          clockStats = "Clocked Out";
-                        });
-                      },
-                      child: Text(clockedIn ? 'Clocked Out' : 'Clock Out')),
+                          backgroundColor: clockedOut
+                              ? MaterialStateProperty.all<Color>(Colors.amber)
+                              : MaterialStateProperty.all<Color>(Colors.red)),
+                      onPressed: clockedOut
+                          ? null
+                          : () async {
+                              if (lunch == false) {
+                                DateTime currentDate = DateTime.now();
+                                attServ.lunchOut(emp.empId, currentDate);
+                                setState(() {
+                                  clockedIn = false;
+                                  clockedOut = true;
+                                  lunch = true;
+                                  clockStats = "Clocked Out";
+                                });
+                              } else {
+                                DateTime currentDate = DateTime.now();
+                                attServ.timeOut(emp.empId, currentDate);
+                                setState(() {
+                                  clockedIn = false;
+                                  clockedOut = true;
+                                  lunch = false;
+                                  clockStats = "Clocked Out";
+                                });
+                              }
+                            },
+                      child: Text(clockedIn ? 'Clock Out' : 'Clocked Out')),
                 ),
               ],
             ),

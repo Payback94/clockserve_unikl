@@ -32,20 +32,67 @@ class AttendanceServ {
     }
   }
 
-  Future<Attendance> timeOut(int empId, String attString, DateTime date) async {
-    final dateOnly = new DateFormat('yyyy-MM-dd');
-    final timeFormat = new DateFormat('hh:mm:ss');
-    final dayName = new DateFormat('EEEE');
+  Future<Attendance> timeOut(int empId, DateTime date) async {
+    var dateOnly = new DateFormat('yyyy-MM-dd');
+    var timeFormat = new DateFormat('HH:mm:ss');
+    var dayName = new DateFormat('EEEE');
 
     Response response = await put(
       Uri.parse(
           'https://192.168.0.171/ClockServe_app/api/attendance/timeOut.php'),
       body: jsonEncode({
         "emp_id": empId,
-        "attendance_string": attString,
-        "attendance_day": dayName.format(date),
         "attendance_date": dateOnly.format(date),
         "attendance_timeIn": timeFormat.format(date)
+      }),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      return Attendance.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to clock in');
+    }
+  }
+
+  Future<Attendance> lunchOut(int empId, DateTime date) async {
+    var dateOnly = new DateFormat('yyyy-MM-dd');
+    var timeFormat = new DateFormat('HH:mm:ss');
+
+    Response response = await put(
+      Uri.parse(
+          'https://192.168.0.171/ClockServe_app/api/attendance/lunchOut.php'),
+      body: jsonEncode({
+        "emp_id": empId,
+        "attendance_date": dateOnly.format(date),
+        "lunch_out": timeFormat.format(date)
+      }),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      return Attendance.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to clock in');
+    }
+  }
+
+  Future<Attendance> lunchIn(int empId, DateTime date) async {
+    var dateOnly = new DateFormat('yyyy-MM-dd');
+    var timeFormat = new DateFormat('HH:mm:ss');
+    var dayName = new DateFormat('EEEE');
+
+    Response response = await put(
+      Uri.parse(
+          'https://192.168.0.171/ClockServe_app/api/attendance/lunchIn.php'),
+      body: jsonEncode({
+        "emp_id": empId,
+        "attendance_date": dateOnly.format(date),
+        "lunch_in": timeFormat.format(date)
       }),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
