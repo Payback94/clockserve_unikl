@@ -27,6 +27,7 @@ dependencies:
   intl: any
   http: any
   provider: any
+  date_time_picker: ^2.0.0
   qrscan: ^0.3.1
   flutter_svg: ^0.22.0
   permission_handler: ^6.1.1

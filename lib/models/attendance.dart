@@ -17,6 +17,8 @@ class Attendance {
     this.attendanceDay,
     this.attendanceDate,
     this.attendanceTimeIn,
+    this.lunch_out,
+    this.lunch_in,
     this.attendanceTimeOut,
   });
 
@@ -27,6 +29,8 @@ class Attendance {
   DateTime attendanceDate;
   String attendanceTimeIn;
   String attendanceTimeOut;
+  String lunch_out;
+  String lunch_in;
 
   factory Attendance.fromJson(Map<String, dynamic> json) {
     return Attendance(
@@ -35,9 +39,13 @@ class Attendance {
       attendanceDay: json["attendance_day"],
       attendanceDate: DateTime.parse(json["attendance_date"]),
       attendanceTimeIn: json["attendance_timeIn"],
+      lunch_out: json["Lunch_Out"],
+      lunch_in: json["Lunch_In"],
       attendanceTimeOut: json["attendance_timeOut"],
     );
   }
+
+  Attendance.lunchOut({this.empId, this.attendanceDate, this.lunch_out});
 
   Map<String, dynamic> toJson() => {
         "attendance_id": attendanceId,

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:clockserve_unikl/services/attendance_serv.dart';
 import 'package:clockserve_unikl/services/Employee_provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,23 @@ class _AttendanceScannerState extends State<AttendanceScanner> {
   bool lunch = false;
   bool clockedOut = true;
   String clockStats = "Clocked Out";
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  Future getStatus() async {
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      clockedIn = prefs.getBool('Clocked In');
+      clockedOut = prefs.getBool('Clocked Out');
+      lunch = prefs.getBool('Lunch');
+    });
+  }
+
+  @override
+  void initState() {
+    getStatus();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Future _scan() async {
@@ -87,26 +105,40 @@ class _AttendanceScannerState extends State<AttendanceScanner> {
                       onPressed: clockedIn
                           ? null
                           : () async {
+                              final SharedPreferences prefs = await _prefs;
                               if (lunch == false) {
                                 var resultScan = await _scan();
                                 final Map<String, dynamic> jsonConvert =
                                     jsonDecode(resultScan);
                                 String attStr = jsonConvert['session_id'];
                                 var rDate = DateTime.parse(jsonConvert['date']);
-                                attServ.timeIn(emp.empId, attStr, rDate);
-                                setState(() {
-                                  clockedIn = true;
-                                  clockedOut = false;
-                                  clockStats = "Clocked In";
-                                });
+                                try {
+                                  await attServ.timeIn(
+                                      emp.empId, attStr, rDate);
+                                  setState(() {
+                                    clockedIn = true;
+                                    clockedOut = false;
+                                    prefs.setBool('Clocked In', clockedIn);
+                                    prefs.setBool('Clocked Out', clockedOut);
+                                    clockStats = "Clocked In";
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
                               } else {
                                 DateTime rDate = DateTime.now();
-                                attServ.lunchIn(emp.empId, rDate);
-                                setState(() {
-                                  clockedIn = true;
-                                  clockedOut = false;
-                                  clockStats = "Clocked In";
-                                });
+                                try {
+                                  await attServ.lunchIn(emp.empId, rDate);
+                                  setState(() {
+                                    clockedIn = true;
+                                    clockedOut = false;
+                                    prefs.setBool('Clocked In', clockedIn);
+                                    prefs.setBool('Clocked Out', clockedOut);
+                                    clockStats = "Clocked In";
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
                               }
                             },
                       child: Text('Scan')),
@@ -121,24 +153,40 @@ class _AttendanceScannerState extends State<AttendanceScanner> {
                       onPressed: clockedOut
                           ? null
                           : () async {
+                              final SharedPreferences prefs = await _prefs;
                               if (lunch == false) {
                                 DateTime currentDate = DateTime.now();
-                                attServ.lunchOut(emp.empId, currentDate);
-                                setState(() {
-                                  clockedIn = false;
-                                  clockedOut = true;
-                                  lunch = true;
-                                  clockStats = "Clocked Out";
-                                });
+                                try {
+                                  await attServ.lunchOut(
+                                      emp.empId, currentDate);
+                                  setState(() {
+                                    clockedIn = false;
+                                    clockedOut = true;
+                                    lunch = true;
+                                    prefs.setBool('Clocked In', clockedIn);
+                                    prefs.setBool('Clocked Out', clockedOut);
+                                    prefs.setBool('Lunch', lunch);
+                                    clockStats = "Clocked Out";
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
                               } else {
                                 DateTime currentDate = DateTime.now();
-                                attServ.timeOut(emp.empId, currentDate);
-                                setState(() {
-                                  clockedIn = false;
-                                  clockedOut = true;
-                                  lunch = false;
-                                  clockStats = "Clocked Out";
-                                });
+                                try {
+                                  await attServ.timeOut(emp.empId, currentDate);
+                                  setState(() {
+                                    clockedIn = false;
+                                    clockedOut = true;
+                                    lunch = false;
+                                    prefs.setBool('Clocked In', clockedIn);
+                                    prefs.setBool('Clocked Out', clockedOut);
+                                    prefs.setBool('Lunch', lunch);
+                                    clockStats = "Clocked Out";
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
                               }
                             },
                       child: Text(clockedIn ? 'Clock Out' : 'Clocked Out')),

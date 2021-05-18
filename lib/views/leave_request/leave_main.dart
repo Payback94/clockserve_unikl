@@ -1,4 +1,5 @@
 import 'package:clockserve_unikl/services/preferences/employee_preferences.dart';
+import 'package:clockserve_unikl/views/leave_request/medicalpage.dart';
 import 'package:flutter/material.dart';
 
 class LeaveMainPage extends StatelessWidget {
@@ -51,7 +52,12 @@ class LeaveMainPage extends StatelessWidget {
                       height: 80,
                       width: 300,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MedicalPage()));
+                        },
                         child: Card(
                           child: Padding(
                             padding: const EdgeInsets.all(20),

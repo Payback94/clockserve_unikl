@@ -33,7 +33,7 @@ class AuthService extends ChangeNotifier {
 
     //sending request over http to database
     Response response = await post(
-        Uri.parse('https://192.168.0.171/ClockServe_app/api/login.php'),
+        Uri.parse('https://192.168.0.156/ClockServe_app/api/login.php'),
         body: json.encode({'email': email, 'password': password}),
         headers: {'Content-Type': 'application/json'});
 
@@ -85,7 +85,7 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
 
     return await post(
-            Uri.parse('https://192.168.0.171/ClockServe_app/api/register.php'),
+            Uri.parse('https://192.168.0.156/ClockServe_app/api/register.php'),
             body: json.encode({
               'first_name': empFirstName,
               'last_name': empLastName,

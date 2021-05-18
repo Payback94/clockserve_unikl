@@ -6,12 +6,12 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:clockserve_unikl/services/request_serv.dart';
 
-class AnnualPage extends StatefulWidget {
+class EmergencyPage extends StatefulWidget {
   @override
-  _AnnualPageState createState() => _AnnualPageState();
+  _EmergencyPageState createState() => _EmergencyPageState();
 }
 
-class _AnnualPageState extends State<AnnualPage> {
+class _EmergencyPageState extends State<EmergencyPage> {
   bool success = true;
   bool failed = true;
   RequestServe rs = new RequestServe();
@@ -27,7 +27,7 @@ class _AnnualPageState extends State<AnnualPage> {
     final emp = Provider.of<Employee_Provider>(context).emp;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Request annual Leave'),
+        title: Text('Request Emergency Leave'),
       ),
       body: Stack(
         children: <Widget>[
@@ -43,7 +43,7 @@ class _AnnualPageState extends State<AnnualPage> {
                   Container(
                       margin: EdgeInsets.fromLTRB(0, 20, 0, 40),
                       child: Text(
-                        'annual REQUEST',
+                        'Emergency REQUEST',
                         style: TextStyle(fontSize: 24),
                       )),
                   Padding(
@@ -214,7 +214,7 @@ class _AnnualPageState extends State<AnnualPage> {
                                 onPressed: () async {
                                   final form = _formKey.currentState;
                                   if (form.validate()) {
-                                    await rs.submitAnnual(emp.empId, reasons,
+                                    await rs.submitEmergency(emp.empId, reasons,
                                         leaveDate, returnDate);
                                     setState(() {
                                       success = !success;

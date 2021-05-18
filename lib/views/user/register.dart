@@ -1,5 +1,6 @@
 import 'package:clockserve_unikl/services/auth.dart';
 import 'package:clockserve_unikl/shared/styles.dart';
+import 'package:clockserve_unikl/views/user/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -161,11 +162,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     width: 400,
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         final form = _formKey.currentState;
                         if (form.validate()) {
-                          auth.register(first_name, last_name, email, password,
-                              password2, gender, race);
+                          await auth.register(first_name, last_name, email,
+                              password, password2, gender, race);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()));
                         }
                       },
                       child: Text('Register'),

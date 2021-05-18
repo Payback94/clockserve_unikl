@@ -67,47 +67,7 @@ class ReportListPage extends StatelessWidget {
                                 ),
                               ],
                             )),
-                        Expanded(
-                          child: ListView(
-                            children: attList
-                                .map((Attendance attList) => Container(
-                                          child: Card(
-                                            child: Container(
-                                              padding: EdgeInsets.all(30),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Column(
-                                                    children: <Widget>[
-                                                      Text(attList
-                                                          .attendanceDay),
-                                                      Text(
-                                                          '${attList.attendanceDate.day}-${attList.attendanceDate.month}-${attList.attendanceDate.year}')
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Column(
-                                                    children: <Widget>[
-                                                      Text('Time In'),
-                                                      Text(
-                                                          '${attList.attendanceTimeIn}')
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                    // ListTile(
-                                    //   title: Text(attList.attendanceDay),
-                                    //   subtitle: Text(
-                                    //       '${attList.attendanceDate.day}-${attList.attendanceDate.month}-${attList.attendanceDate.year}'),
-                                    // ),
-                                    )
-                                .toList(),
-                          ),
-                        ),
+                        listAttendance(attList),
                       ],
                     )
                   ],
@@ -117,5 +77,74 @@ class ReportListPage extends StatelessWidget {
                 return Center(child: CircularProgressIndicator());
               }
             }));
+  }
+
+  Expanded listAttendance(List<Attendance> attList) {
+    return Expanded(
+      child: ListView(
+        children: attList
+            .map((Attendance attList) => Container(
+                      child: Card(
+                        child: Container(
+                          padding: EdgeInsets.all(15),
+                          child: Row(
+                            children: <Widget>[
+                              Column(
+                                children: <Widget>[
+                                  Text(attList.attendanceDay),
+                                  Text(
+                                      '${attList.attendanceDate.day}-${attList.attendanceDate.month}-${attList.attendanceDate.year}')
+                                ],
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  Text('Time In'),
+                                  Text('${attList.attendanceTimeIn}')
+                                ],
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  Text('Lunch Out'),
+                                  Text('${attList.lunch_out}')
+                                ],
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  Text('Lunch In'),
+                                  Text('${attList.lunch_in}')
+                                ],
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  Text('Time Out'),
+                                  Text('${attList.attendanceTimeOut}')
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                // ListTile(
+                //   title: Text(attList.attendanceDay),
+                //   subtitle: Text(
+                //       '${attList.attendanceDate.day}-${attList.attendanceDate.month}-${attList.attendanceDate.year}'),
+                // ),
+                )
+            .toList(),
+      ),
+    );
   }
 }
