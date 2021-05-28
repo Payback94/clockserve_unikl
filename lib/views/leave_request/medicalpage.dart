@@ -29,22 +29,27 @@ class _MedicalPageState extends State<MedicalPage> {
       appBar: AppBar(
         title: Text('Request Medical Leave'),
       ),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: 100,
-            color: Colors.amber,
-          ),
-          SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+      body: SingleChildScrollView(
+        child: Stack(
+          children: <Widget>[
+            Container(
+              height: 100,
+              color: Colors.amber,
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
               child: Column(
                 children: <Widget>[
                   Container(
-                      margin: EdgeInsets.fromLTRB(0, 20, 0, 40),
-                      child: Text(
-                        'MEDICAL REQUEST',
-                        style: TextStyle(fontSize: 24),
+                      margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                      child: Card(
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          child: Text(
+                            'MEDICAL REQUEST',
+                            style: TextStyle(fontSize: 24),
+                          ),
+                        ),
                       )),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -63,7 +68,7 @@ class _MedicalPageState extends State<MedicalPage> {
                                           padding: EdgeInsets.all(10),
                                           child: Center(
                                             child: Text(
-                                              'Successfully Submitted Request',
+                                              'Success. Please submit your medical support document to the administration office.',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold),
@@ -89,7 +94,11 @@ class _MedicalPageState extends State<MedicalPage> {
                                           )),
                                     ),
                             ),
-                            Text('Employee Detail'),
+                            Text(
+                              'Employee Detail',
+                              style: TextStyle(
+                                  fontSize: 24, fontWeight: FontWeight.bold),
+                            ),
                             SizedBox(
                               height: styleHeight,
                             ),
@@ -236,8 +245,8 @@ class _MedicalPageState extends State<MedicalPage> {
                 ],
               ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

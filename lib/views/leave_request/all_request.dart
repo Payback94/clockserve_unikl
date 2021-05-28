@@ -1,19 +1,19 @@
-import 'package:clockserve_unikl/models/attendance.dart';
+import 'package:clockserve_unikl/models/leave_requests.dart';
 import 'package:clockserve_unikl/services/Employee_provider.dart';
 import 'package:clockserve_unikl/services/preferences/employee_preferences.dart';
-import 'package:clockserve_unikl/services/attendance_serv.dart';
+import 'package:clockserve_unikl/services/request_serv.dart';
 import 'package:clockserve_unikl/shared/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ReportListPage extends StatelessWidget {
+class RequestListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final emp = Provider.of<Employee_Provider>(context).emp;
-    final AttendanceServ attServe = AttendanceServ();
+    final RequestServe rqServe = RequestServe();
     return Scaffold(
         appBar: AppBar(
-          title: Text('Attendance List'),
+          title: Text('Leave Request List'),
           centerTitle: true,
           actions: <Widget>[
             ElevatedButton.icon(
@@ -33,34 +33,35 @@ class ReportListPage extends StatelessWidget {
           ],
         ),
         body: FutureBuilder(
-            future: attServe.getEmpAttendance(emp.empId),
+            future: rqServe.getEmpRequest(emp.empId),
             builder: (BuildContext context,
-                AsyncSnapshot<List<Attendance>> snapshot) {
+                AsyncSnapshot<List<Leaverequest>> snapshot) {
               if (snapshot.hasData) {
-                List<Attendance> attList = snapshot.data;
+                List<Leaverequest> attList = snapshot.data;
                 return Stack(
                   children: <Widget>[
                     Container(
-                      height: 200,
+                      height: 150,
                       color: Colors.amber,
                     ),
                     Column(
                       children: [
                         Container(
                             alignment: Alignment.topLeft,
+                            margin: EdgeInsets.only(bottom: 10),
                             padding: EdgeInsets.symmetric(
-                                vertical: 30, horizontal: 20),
+                                vertical: 50, horizontal: 20),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'ATTENDANCE LIST',
+                                  'LEAVE REQUEST LIST',
                                   style: TextStyle(
                                       fontSize: 26,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  'Here is the list of your attendance history.',
+                                  'Here is the list of your request history.',
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal),
@@ -70,39 +71,93 @@ class ReportListPage extends StatelessWidget {
                         Expanded(
                           child: ListView(
                             children: attList
-                                .map((Attendance attList) => Container(
+                                .map((Leaverequest attList) => Container(
+                                          margin: EdgeInsets.only(top: 15),
                                           child: Card(
+                                            elevation: 20.0,
                                             child: Container(
-                                              padding: EdgeInsets.all(30),
+                                              padding: EdgeInsets.all(15),
                                               child: Row(
                                                 children: <Widget>[
                                                   Column(
                                                     children: <Widget>[
-                                                      Text(attList
-                                                          .attendanceDay),
-                                                      Text(
-                                                          '${attList.attendanceDate.day}-${attList.attendanceDate.month}-${attList.attendanceDate.year}')
+                                                      Text('Ticket ID'),
+                                                      Text(attList.requestId),
                                                     ],
                                                   ),
                                                   SizedBox(
                                                     width: 10,
                                                   ),
+                                                  Container(
+                                                    width: 100,
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        Text('Leave Reason'),
+                                                        Text(
+                                                          '${attList.requestReason}',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 100,
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        Text('Status'),
+                                                        if (attList
+                                                                .requestApproval ==
+                                                            'APPROVED')
+                                                          Text(
+                                                            '${attList.requestApproval}',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .green),
+                                                          )
+                                                        else if (attList
+                                                                .requestApproval ==
+                                                            'PENDING')
+                                                          Text(
+                                                            '${attList.requestApproval}',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .amber),
+                                                          )
+                                                        else if (attList
+                                                                .requestApproval ==
+                                                            'DENIED')
+                                                          Text(
+                                                            '${attList.requestApproval}',
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red),
+                                                          ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
                                                   Column(
                                                     children: <Widget>[
-                                                      Text('Time In'),
+                                                      Text('Date Leave'),
                                                       Text(
-                                                          '${attList.attendanceTimeIn}')
+                                                          '${attList.dateLeave.day}-${attList.dateLeave.month}-${attList.dateLeave.year}'),
+                                                      Text('Date Return'),
+                                                      Text(
+                                                          '${attList.dateReturn.day}-${attList.dateReturn.month}-${attList.dateReturn.year}')
                                                     ],
-                                                  )
+                                                  ),
                                                 ],
                                               ),
                                             ),
                                           ),
                                         )
                                     // ListTile(
-                                    //   title: Text(attList.attendanceDay),
+                                    //   title: Text(attList.LeaverequestDay),
                                     //   subtitle: Text(
-                                    //       '${attList.attendanceDate.day}-${attList.attendanceDate.month}-${attList.attendanceDate.year}'),
+                                    //       '${attList.LeaverequestDate.day}-${attList.LeaverequestDate.month}-${attList.LeaverequestDate.year}'),
                                     // ),
                                     )
                                 .toList(),

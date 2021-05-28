@@ -111,6 +111,7 @@ class AttendanceServ {
         'https://192.168.0.156/ClockServe_app/api/attendance/read_all_emp.php?emp_id=$id'));
     if (response.statusCode == 200) {
       print(response.body);
+
       List<dynamic> body = jsonDecode(response.body)['data'];
       List<Attendance> att = body
           .map(

@@ -1,4 +1,7 @@
 import 'package:clockserve_unikl/services/preferences/employee_preferences.dart';
+import 'package:clockserve_unikl/views/leave_request/all_request.dart';
+import 'package:clockserve_unikl/views/leave_request/annualpage.dart';
+import 'package:clockserve_unikl/views/leave_request/emergencypage.dart';
 import 'package:clockserve_unikl/views/leave_request/medicalpage.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +36,12 @@ class LeaveMainPage extends StatelessWidget {
                       height: 80,
                       width: 300,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RequestListPage()));
+                        },
                         child: Card(
                           child: Padding(
                             padding: const EdgeInsets.all(20),
@@ -76,7 +84,12 @@ class LeaveMainPage extends StatelessWidget {
                       height: 80,
                       width: 300,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AnnualPage()));
+                        },
                         child: Card(
                           child: Padding(
                             padding: const EdgeInsets.all(20),
@@ -95,7 +108,12 @@ class LeaveMainPage extends StatelessWidget {
                       height: 80,
                       width: 300,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EmergencyPage()));
+                        },
                         child: Card(
                           child: Padding(
                             padding: const EdgeInsets.all(20),

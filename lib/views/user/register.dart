@@ -1,6 +1,7 @@
 import 'package:clockserve_unikl/services/auth.dart';
 import 'package:clockserve_unikl/shared/styles.dart';
 import 'package:clockserve_unikl/views/user/login.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,8 @@ class _RegisterPageState extends State<RegisterPage> {
   String password2 = '';
   String race = '';
   String gender = '';
-  DateTime date;
+  DateTime dateofbirth;
+  bool failed = false;
   bool loading = false;
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,19 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(
                     height: 10,
                   ),
+                  Container(
+                      child: failed
+                          ? Card(
+                              color: Colors.red,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                    'Please ensure you have filled the spaces below',
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.white)),
+                              ),
+                            )
+                          : Container()),
                   Row(
                     children: <Widget>[
                       Flexible(
@@ -104,6 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         flex: 1,
                         child: Container(
                           child: TextFormField(
+                            obscureText: true,
                             validator: (value) =>
                                 value.isEmpty ? 'Enter password' : null,
                             onChanged: (val) {
@@ -121,6 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         flex: 1,
                         child: Container(
                           child: TextFormField(
+                            obscureText: true,
                             validator: (value) =>
                                 value.isEmpty ? 'Enter password' : null,
                             onChanged: (val) {
@@ -136,9 +153,20 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(
                     height: 10,
                   ),
-                  TextFormField(
-                      decoration:
-                          decorationBox.copyWith(hintText: 'Date of Birth')),
+                  DateTimePicker(
+                    validator: (value) =>
+                        value.isEmpty ? 'Date of Birth' : null,
+                    decoration:
+                        decorationBox.copyWith(hintText: 'Date of Birth'),
+                    initialValue: '',
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2050),
+                    dateLabelText: 'Date of Birth',
+                    onChanged: (val) {
+                      setState(() => dateofbirth = DateTime.parse(val));
+                      print(dateofbirth);
+                    },
+                  ),
                   SizedBox(
                     height: 10,
                   ),
@@ -166,11 +194,19 @@ class _RegisterPageState extends State<RegisterPage> {
                         final form = _formKey.currentState;
                         if (form.validate()) {
                           await auth.register(first_name, last_name, email,
-                              password, password2, gender, race);
-                          Navigator.push(
+                              password, password2, dateofbirth, gender, race);
+
+                          setState(() {
+                            failed = false;
+                          });
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => LoginPage()));
+                        } else {
+                          setState(() {
+                            failed = true;
+                          });
                         }
                       },
                       child: Text('Register'),

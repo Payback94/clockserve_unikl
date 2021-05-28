@@ -5,6 +5,7 @@ import 'package:clockserve_unikl/models/employee.dart';
 import 'package:clockserve_unikl/services/preferences/employee_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 
 enum Status {
   NotLoggedIn,
@@ -68,18 +69,10 @@ class AuthService extends ChangeNotifier {
       String email,
       String password,
       String confirm_password,
+      DateTime dateofbirth,
       String gender,
       String race) async {
-    final Map<String, dynamic> registrationData = {
-      'user': {
-        'first_name': empFirstName,
-        'last_name': empLastName,
-        'email': email,
-        'password': password,
-        'password2': confirm_password,
-        'race': race,
-      }
-    };
+    final dateOnly = new DateFormat('yyyy-MM-dd');
 
     _registeredInStats = Status.Registering;
     notifyListeners();
@@ -90,10 +83,11 @@ class AuthService extends ChangeNotifier {
               'first_name': empFirstName,
               'last_name': empLastName,
               'email': email,
+              'dateofbirth': dateOnly.format(dateofbirth),
+              'gender': gender,
               'password': password,
               'password2': confirm_password,
-              'gender': gender,
-              'race': race
+              'race': race.toUpperCase(),
             }),
             headers: {'Content-Type': 'application/json', 'Charset': 'utf-8'})
         .then(onValue)

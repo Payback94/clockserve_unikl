@@ -84,4 +84,21 @@ class RequestServe {
       throw Exception('Failed to clock in');
     }
   }
+
+  Future<List<Leaverequest>> getEmpRequest(int empId) async {
+    Response response = await post(Uri.parse(
+        'https://192.168.0.156/ClockServe_app/api/request/read_emp_all.php?emp_id=$empId'));
+    if (response.statusCode == 200) {
+      print(response.body);
+      List<dynamic> body = jsonDecode(response.body)['data'];
+      List<Leaverequest> lr = body
+          .map(
+            (dynamic item) => Leaverequest.fromJson(item),
+          )
+          .toList();
+      return lr;
+    } else {
+      throw "Unable to read attendance";
+    }
+  }
 }
